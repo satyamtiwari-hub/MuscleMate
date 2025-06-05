@@ -1,29 +1,51 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { supabase } from '@/services/supabase';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { Slot, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const router = useRouter();
+  const [appReady, setAppReady] = useState(false);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  useEffect(() => {
+    const session = supabase.auth.session();
+
+    if (!session) {
+      // Delay navigation to let RootLayout render first
+      setTimeout(() => {
+        router.replace('/auth/login');
+      }, 100);
+    }
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setTimeout(() => {
+        if (session) {
+          router.replace('/tabs');
+        } else {
+          router.replace('/auth/login');
+        }
+      }, 100);
+    });
+
+    setAppReady(true);
+
+    return () => {
+      listener?.unsubscribe();
+    };
+  }, []);
+
+  if (!appReady) return null;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <Layout style={{ flex: 1 }}>
+          <Slot />
+        </Layout>
+      </ApplicationProvider>
+    </>
   );
 }
