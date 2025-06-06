@@ -10,20 +10,25 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-const handleLogin = async () => {
-  setLoading(true);
+  const handleLogin = async () => {
+    setLoading(true);
 
-  const { user, session, error } = await supabase.auth.signIn({ email, password });
-  setLoading(false);
+    const { user, session, error } = await supabase.auth.signIn({ 
+      email, 
+      password 
+    });
+    
+    setLoading(false);
 
-  if (error) {
-    Alert.alert('Login Error', error.message);
-  } else if (session || user) {
-    router.replace('/tabs');
-  } else {
-    Alert.alert('Login Failed', 'No session returned.');
-  }
-};
+    if (error) {
+      Alert.alert('Login Error', error.message);
+    } else if (session || user) {
+      // Navigate to the tabs - try different approaches
+      router.replace('/(tabs)/');
+    } else {
+      Alert.alert('Login Failed', 'No session returned.');
+    }
+  };
 
   return (
     <Layout style={styles.container}>

@@ -17,12 +17,17 @@ export default function RootLayout() {
       setTimeout(() => {
         router.replace('/auth/login');
       }, 100);
+    } else {
+      // If there's already a session, go to tabs
+      setTimeout(() => {
+        router.replace('/(tabs)/');
+      }, 100);
     }
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setTimeout(() => {
         if (session) {
-          router.replace('/tabs');
+          router.replace('/(tabs)/'); // Navigate to tabs directory
         } else {
           router.replace('/auth/login');
         }
@@ -32,7 +37,9 @@ export default function RootLayout() {
     setAppReady(true);
 
     return () => {
-      listener?.unsubscribe();
+      if (listener && listener.unsubscribe) {
+        listener.unsubscribe();
+      }
     };
   }, []);
 
