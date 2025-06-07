@@ -41,10 +41,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="diet"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Diet',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="restaurant" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="body-metrics"
+        options={{
+          title: 'Body',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="body" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person" color={color} />,
         }}
       />
     </Tabs>
