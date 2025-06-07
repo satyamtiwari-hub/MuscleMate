@@ -16,7 +16,7 @@ export default function RootLayout() {
 
     if (!session) {
       setTimeout(() => {
-        router.replace('/auth/login');
+       router.replace('/auth/welcome')
       }, 100);
     } else {
       setTimeout(() => {
