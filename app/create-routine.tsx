@@ -55,16 +55,7 @@ export default function CreateRoutineScreen() {
   };
 
   const handleAddExercise = () => {
-    // TODO: Navigate to add exercise screen or open exercise picker
-    // For now, add a dummy exercise to show the functionality
-    const dummyExercise: Exercise = {
-      id: Date.now().toString(),
-      name: 'Push-ups',
-      sets: 3,
-      reps: 12
-    };
-    setExercises([...exercises, dummyExercise]);
-    console.log('Add exercise functionality');
+    router.push('/select-exercise');
   };
 
   return (

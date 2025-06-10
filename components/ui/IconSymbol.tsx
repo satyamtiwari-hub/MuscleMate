@@ -23,6 +23,11 @@ const MAPPING = {
   'person': 'person',
   'share': 'share',
   'settings': 'settings',
+  'clock': 'access-time',
+  'play': 'play-arrow',
+  'plus': 'add',
+  'repeat': 'refresh',
+  'checkmark': 'check',
 } as const;
 
 export type IconSymbolName = keyof typeof MAPPING;
